@@ -1,0 +1,46 @@
+Options +FollowSymlinks
+Options -MultiViews -Indexes
+
+
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^(admin|user)($|/) - [L]
+
+RewriteRule ^IN/company/(.*)$ company.php?slug=$1 [L]
+
+RewriteRule ^services/IN/page-(.*)$ services.php?page=$1 [L]
+RewriteRule ^services/IN/(.*)$ services.php?location_slug=$1 [L]
+
+RewriteRule ^service/(.*)/IN$ companies.php?service_slug=$1 [L]
+
+RewriteRule ^service/(.*)/IN/page-(.*)$ companies.php?service_slug=$1&page=$2 [L]
+
+RewriteRule ^service/(.*)/IN/(.*)$ companies.php?service_slug=$1&location_slug=$2 [L]
+
+
+RewriteRule ^service/IN/(.*)$ companies.php?location_slug=$1 [L]
+
+RewriteRule ^service/IN/(.*)/(.*)$ companies.php?location_slug=$1&page=$2 [L]
+
+RewriteRule ^page-(.*)$ index.php?page=$1 [L]
+
+RewriteRule ^service/(.*)/IN/(.*)/(.*)$ companies.php?service_slug=$1&location_slug=$2&page=$3 [L]
+
+
+
+# Unless directory, remove trailing slash
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/$ http://192.168.10.87/company-directory/$1 [R=301,L]
+
+# Redirect external .php requests to extensionless URL
+RewriteCond %{THE_REQUEST} ^(.+)\.php([#?][^\ ]*)?\ HTTP/
+RewriteRule ^(.+)\.php$ http://192.168.10.87/company-directory/$1 [R=301,L]
+
+# Resolve .php file for extensionless PHP URLs
+RewriteRule ^([^/.]+)$ $1.php [L]
+
+
+
